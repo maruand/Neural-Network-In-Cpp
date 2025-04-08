@@ -28,6 +28,7 @@ class LinearLayer {
     
 };
 
+// Constructor
 LinearLayer::LinearLayer(int nInputs, int nOutputs) {
     this->nInputs = nInputs;
     this->nOutputs = nOutputs;
@@ -35,6 +36,8 @@ LinearLayer::LinearLayer(int nInputs, int nOutputs) {
     output = new float[nOutputs]; // Dynamically allocate memory for output
 
 };
+
+// Destructor
 LinearLayer::~LinearLayer() {
     delete[] input; // Free allocated memory for input
     delete[] output; // Free allocated memory for output
@@ -46,7 +49,7 @@ void LinearLayer::initWeights(){
 
     std::normal_distribution d{0.0, sqrt(nInputs)}; // Normal distribution with mean=0, std=sqrt(nInputs)
 
-    auto random_float = [&d, &gen]{return d(gen);}; // Function to draw a random float from the normal dist
+    auto random_float = [&d, &gen]{return d(gen);}; // Function to draw a random float from the normal dist (lambda exoressin that captures d and gen by reference)
 
     // Populate the wegihts matrix with random floats
     for (int i = 0; i < nInputs; i++ ){
