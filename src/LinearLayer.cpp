@@ -1,29 +1,33 @@
 #include <vector>
+#include <Eigen/Dense>
 #include <cmath>
 #include <cstdlib>
 #include <numeric>
 #include <random>
 
+using Eigen::MatrixXd;
+using Eigen::VectorXd;
 
 class LinearLayer {
     public:
         LinearLayer(int nInputs, int nOutputs);
-        ~LinearLayer();
-        void forward(float* input);
+        
+        VectorXd operator()(VectorXd& input);
         void backward(float* input, float* output);
         void updateWeights(float learningRate);
         void initWeights();
         void initBias();
+        float ReLU(float x);
 
     private:
         int nInputs;
         int nOutputs;
-        float* input;
-        float* output;
-        std::vector<float> weights;
-        std::vector<float> bias;
-        std::vector<float> gradWeights;
-        std::vector<float> gradBias;
+        VectorXd input;
+        VectorXd output;
+        MatrixXd weights;
+        VectorXd bias;
+        MatrixXd gradWeights;
+        VectorXd gradBias;
 
     
 };
@@ -32,40 +36,38 @@ class LinearLayer {
 LinearLayer::LinearLayer(int nInputs, int nOutputs) {
     this->nInputs = nInputs;
     this->nOutputs = nOutputs;
-    input = new float[nInputs]; // Dynamically allocate memory for input
-    output = new float[nOutputs]; // Dynamically allocate memory for output
-
+    initWeights();
+    initBias();
+    
 };
 
-// Destructor
-LinearLayer::~LinearLayer() {
-    delete[] input; // Free allocated memory for input
-    delete[] output; // Free allocated memory for output
-};
+
 
 void LinearLayer::initWeights(){
+
     std::random_device rd{};
     std::mt19937 gen{rd()};
 
     std::normal_distribution d{0.0, sqrt(nInputs)}; // Normal distribution with mean=0, std=sqrt(nInputs)
 
-    auto random_float = [&d, &gen]{return d(gen);}; // Function to draw a random float from the normal dist (lambda exoressin that captures d and gen by reference)
+    auto normal = [&](){return d(gen);}; // Function to draw a random float from the normal dist (lambda exoressin that captures d and gen by reference)
 
-    // Populate the wegihts matrix with random floats
-    for (int i = 0; i < nInputs; i++ ){
-        for (int j = 0; j < nOutputs; j++){
-            weights[i,j] = random_float();
-        };
-        
-    };
+    weights = MatrixXd::NullaryExpr(nOutputs, nInputs, normal); // Initialize the weight matrix with normally distributed floats
+    
 };
 
 void LinearLayer::initBias(){
-    for (int i; i < nOutputs; i++){
-        bias[i] = 0;
-    };
+    bias = VectorXd::Ones(nOutputs);
 };
-void LinearLayer::forward(float* input){
+
+VectorXd LinearLayer::operator()(VectorXd& input){
+    output = input * weights + bias;
+    return output.unaryExpr(&ReLU);
+};
+
+float LinearLayer::ReLU(float x){return fmax(0.0,x);};
 
 
-}
+
+
+
