@@ -17,7 +17,7 @@ class LinearLayer {
         void updateWeights(float learningRate);
         void initWeights();
         void initBias();
-        float ReLU(float x);
+
 
     private:
         int nInputs;
@@ -62,10 +62,9 @@ void LinearLayer::initBias(){
 
 VectorXd LinearLayer::operator()(VectorXd& input){
     output = input * weights + bias;
-    return output.unaryExpr(&ReLU);
+    return output;
 };
 
-float LinearLayer::ReLU(float x){return fmax(0.0,x);};
 
 
 
