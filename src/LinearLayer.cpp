@@ -13,7 +13,7 @@ class LinearLayer {
         LinearLayer(int nInputs, int nOutputs);
         
         VectorXd operator()(VectorXd &input);
-        void backward(const VectorXd &input, const VectorXd &output);
+        void backward(VectorXd &input, VectorXd &output);
         void updateWeights(float learningRate);
         void initWeights();
         void initBias();
@@ -65,9 +65,16 @@ VectorXd LinearLayer::operator()(VectorXd &input){
     return output;
 };
 
-void LinearLayer::backward(const VectorXd &input, const VectorXd &output){
+void LinearLayer::backward(VectorXd &input, VectorXd &gradOutput) {
+    // Compute gradient of weights
+    gradWeights = gradOutput * input.transpose();
 
-};
+    // Compute gradient of biases
+    gradBias = gradOutput;
+
+    // Compute gradient of input to propagate to the previous layer
+    input = weights.transpose() * gradOutput;
+}
 
 
 
