@@ -12,8 +12,8 @@ class LinearLayer {
     public:
         LinearLayer(int nInputs, int nOutputs);
         
-        VectorXd operator()(VectorXd& input);
-        void backward(float* input, float* output);
+        VectorXd operator()(VectorXd &input);
+        void backward(const VectorXd &input, const VectorXd &output);
         void updateWeights(float learningRate);
         void initWeights();
         void initBias();
@@ -60,11 +60,14 @@ void LinearLayer::initBias(){
     bias = VectorXd::Ones(nOutputs);
 };
 
-VectorXd LinearLayer::operator()(VectorXd& input){
+VectorXd LinearLayer::operator()(VectorXd &input){
     output = input * weights + bias;
     return output;
 };
 
+void LinearLayer::backward(const VectorXd &input, const VectorXd &output){
+
+};
 
 
 

@@ -7,20 +7,25 @@ using Eigen::VectorXd;
 class MSELoss{
     public:
         MSELoss();
-        float operator()(VectorXd prdiction, VectorXd target);
-        float calculateLoss(VectorXd prediction, VectorXd target);
+        float operator()(VectorXd prdiction, VectorXd &target);
+        float calculateLoss(VectorXd prediction, VectorXd &target);
+        VectorXd lossDerivative(VectorXd prediction, VectorXd &target);
 
 };
 
-float MSELoss::operator()(VectorXd prediction, VectorXd target){
+float MSELoss::operator()(VectorXd prediction, VectorXd &target){
     return calculateLoss(prediction, target);
 };
 
-float MSELoss::calculateLoss(VectorXd prediction, VectorXd target){
+float MSELoss::calculateLoss(VectorXd prediction, VectorXd &target){
     VectorXd residuals = prediction - target;
-    VectorXd residualsSquared = residuals.pow(2);
+    VectorXd residualsSquared = residuals.array().square();
     return residualsSquared.sum();
 
+};
+
+VectorXd MSELoss::lossDerivative(VectorXd prediction, VectorXd &target){
+    return 2*(prediction-target);
 };
 
 class BinaryMAELoss
