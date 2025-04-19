@@ -1,18 +1,25 @@
 {
+    "version": "0.2.0",
     "configurations": [
         {
-            "name": "C/C++: clang++ build and debug active file",
+            "name": "Debug C++: clang++ build active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/rooster",
+            "program": "${fileDirname}/${fileBasenameNoExtension}",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${fileDirname}",
+            "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "lldb",
-            "preLaunchTask": "Built with clang++ 16.0.0"
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "C/C++: clang++ build active file (USE)"
         }
-    ],
-    "version": "2.0.0"
+    ]
 }
