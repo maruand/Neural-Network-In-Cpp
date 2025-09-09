@@ -1,8 +1,8 @@
-#include "/Users/marcusandersson/Desktop/neural_network/src/ActivationFun.cpp"
-#include "/Users/marcusandersson/Desktop/neural_network/src/LinearLayer.cpp"
-#include "/Users/marcusandersson/Desktop/neural_network/src/LossFun.cpp"
-#include "/Users/marcusandersson/Desktop/neural_network/src/Optimizer.cpp"
-#include "/Users/marcusandersson/Desktop/neural_network/src/Utilities.cpp"
+#include "ActivationFun.cpp"
+#include "LinearLayer.cpp"
+#include "LossFun.cpp"
+#include "Optimizer.cpp"
+#include "Utilities.cpp"
 #include <Eigen/Dense>
 
 using Eigen::MatrixXd;
@@ -19,16 +19,16 @@ private:
 
 public:
     NeuralNetwork()
-        : inputLayer(10, 30), hiddenLayer(30, 30), outputLayer(30, 1), optimizer(0.01) {
+        : inputLayer(10, 30), hiddenLayer(30, 30), outputLayer(30, 1), optimizer(0.001) {
         // Initialize layers and optimizer
     }
 
     VectorXd forward (VectorXd& input) {
-        std::cout << input << std::endl;
+        //std::cout << input << std::endl;
         VectorXd hiddenOutput = activationFunction(inputLayer.forward(input));
-        std::cout << hiddenOutput << std::endl;
+        //std::cout << hiddenOutput << std::endl;
         VectorXd hiddenOutput2 = activationFunction(hiddenLayer.forward(hiddenOutput));
-        std::cout << hiddenOutput2 << std::endl;
+        //std::cout << hiddenOutput2 << std::endl;
         return outputLayer.forward(hiddenOutput2);
     }
 
@@ -44,8 +44,8 @@ public:
                 // Compute loss
                 Eigen::VectorXd targetCopy = targets[i];
                 //std::cout << 5 << std::endl;
-                std::cout <<"predictions: " << predictions << std::endl;
-                std::cout << targetCopy << std::endl;
+                //std::cout <<"predictions: " << predictions << std::endl;
+                //std::cout << targetCopy << std::endl;
                 double loss = lossFunction.forward(predictions, targetCopy);
                 //std::cout << 6 << std::endl;
                 totalLoss += loss;

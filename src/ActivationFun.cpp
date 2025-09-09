@@ -1,6 +1,6 @@
 #include <Eigen/Dense>
 #include <cmath>
-#include <ActivationFun.h>
+#include "../include/ActivationFun.h"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;

@@ -5,7 +5,7 @@
 #include <numeric>
 #include <random>
 #include <iostream>
-#include <LinearLayer.h>
+#include "../include/LinearLayer.h"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -26,7 +26,8 @@ void LinearLayer::initWeights(){
     std::random_device rd{};
     std::mt19937 gen{rd()};
 
-    std::normal_distribution d{0.0, sqrt(nInputs)}; // Normal distribution with mean=0, std=sqrt(nInputs)
+        // Use smaller stddev for weights to avoid exploding values
+        std::normal_distribution d{0.0, 1.0 / sqrt(nInputs)}; // Normal distribution with mean=0, std=1/sqrt(nInputs)
 
     auto normal = [&](){return d(gen);}; // Function to draw a random float from the normal dist (lambda exoressin that captures d and gen by reference)
 
@@ -40,8 +41,8 @@ void LinearLayer::initBias(){
 
 VectorXd LinearLayer::forward(VectorXd &input) {
     if (input.size() != nInputs) {
-        std::cout << input.size()<<std::endl;
-        std::cout << nInputs<<std::endl;
+        //std::cout << input.size()<<std::endl;
+        //std::cout << nInputs<<std::endl;
         throw std::invalid_argument("Input size does not match the number of inputs for the layer.");
     }
     output = (weights * input).colwise() + bias; // Corrected matrix multiplication

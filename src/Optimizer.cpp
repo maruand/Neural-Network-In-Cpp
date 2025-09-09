@@ -1,6 +1,6 @@
 #include <Eigen/Dense>
 #include <cmath>
-#include "Optimizer.h"
+#include "../include/Optimizer.h"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;

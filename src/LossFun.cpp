@@ -1,7 +1,7 @@
 #include <Eigen/Dense>
 #include <cmath>
 #include <iostream>
-#include <LossFun.h>
+#include "../include/LossFun.h"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -14,8 +14,8 @@ float MSELoss::forward(VectorXd prediction, VectorXd &target){
 };
 
 float MSELoss::calculateLoss(VectorXd prediction, VectorXd &target){
-    std::cout << prediction << std::endl;
-    std::cout << target << std::endl;
+    //std::cout << prediction << std::endl;
+    //std::cout << target << std::endl;
     VectorXd residuals = prediction - target;
     VectorXd residualsSquared = residuals.array().square();
     return residualsSquared.sum();
