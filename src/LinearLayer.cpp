@@ -4,33 +4,11 @@
 #include <cstdlib>
 #include <numeric>
 #include <random>
+#include <iostream>
+#include <LinearLayer.h>
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
-
-class LinearLayer {
-    public:
-        LinearLayer(int nInputs, int nOutputs);
-        
-        VectorXd operator()(VectorXd &input);
-        void backward(VectorXd &input, VectorXd &output);
-        void updateWeights(float learningRate);
-        void initWeights();
-        void initBias();
-
-
-    private:
-        int nInputs;
-        int nOutputs;
-        VectorXd input;
-        VectorXd output;
-        MatrixXd weights;
-        VectorXd bias;
-        MatrixXd gradWeights;
-        VectorXd gradBias;
-
-    
-};
 
 // Constructor
 LinearLayer::LinearLayer(int nInputs, int nOutputs) {
@@ -60,12 +38,18 @@ void LinearLayer::initBias(){
     bias = VectorXd::Ones(nOutputs);
 };
 
-VectorXd LinearLayer::operator()(VectorXd &input){
-    output = input * weights + bias;
+VectorXd LinearLayer::forward(VectorXd &input) {
+    if (input.size() != nInputs) {
+        std::cout << input.size()<<std::endl;
+        std::cout << nInputs<<std::endl;
+        throw std::invalid_argument("Input size does not match the number of inputs for the layer.");
+    }
+    output = (weights * input).colwise() + bias; // Corrected matrix multiplication
+    //std::cout << output.size() << std::endl;
     return output;
-};
+}
 
-void LinearLayer::backward(VectorXd &input, VectorXd &gradOutput) {
+VectorXd LinearLayer::backward(VectorXd &input, VectorXd &gradOutput) {
     // Compute gradient of weights
     gradWeights = gradOutput * input.transpose();
 
@@ -73,7 +57,7 @@ void LinearLayer::backward(VectorXd &input, VectorXd &gradOutput) {
     gradBias = gradOutput;
 
     // Compute gradient of input to propagate to the previous layer
-    input = weights.transpose() * gradOutput;
+    return weights.transpose() * gradOutput;
 }
 
 

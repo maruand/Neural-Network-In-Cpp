@@ -1,16 +1,14 @@
 #include <Eigen/Dense>
 #include <cmath>
-
+#include "Optimizer.h"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
-class SGD{
-    public:
-        float learningRate;
 
-        void step(MatrixXd &weigths, VectorXd &bias, MatrixXd &weightsGrad, VectorXd &biasGrad){
-            weigths -= learningRate*weightsGrad;
-            bias -= learningRate*biasGrad;
-        };
+SGD::SGD(float lr){learningRate=lr;};
+
+void SGD::step(MatrixXd &weigths, VectorXd &bias, MatrixXd &weightsGrad, VectorXd &biasGrad){
+    weigths -= learningRate*weightsGrad;
+    bias -= learningRate*biasGrad;
 };

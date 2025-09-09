@@ -20,14 +20,15 @@ int count_rows(const std::string& file_name) {
     int headerLength = 0;
     
     int row_count = 0;
+    bool header = true;
 
     while (getline(file, line)) {
         std::stringstream ss(line);
         int numCols = 0; // Reset numCols for each line
-        if (row_count == 0) {
+        if (header) {
             while (std::getline(ss, val, ',')) {
                 headerLength++;
-            } row_count ++;
+            } header = false;
         } else {
             while (std::getline(ss, val, ',')) {
                 numCols++;
@@ -56,8 +57,8 @@ std::vector<VectorXd> readFile(std::string file_name, bool hasHeader = true){
     int fileLine = 0;
     int num_rows = count_rows(file_name);
     std::cout << num_rows << std::endl;
-    VectorXd target(num_rows+1);
-
+    VectorXd target(num_rows);
+    int i = 1;
     int rowIdx = 0;
     int headerLength = 0;
 
@@ -88,14 +89,10 @@ std::vector<VectorXd> readFile(std::string file_name, bool hasHeader = true){
                 col(colIdx) = val;
                 if (ss.peek() == ',') ss.ignore();
                 colIdx++;
-            } else {
-                std::cout << "---------------------------------" << std::endl;
-                std::cout << val << std::endl;
-                std::cout << fileLine << std::endl;
+            } else if(fileLine <= target.rows()){
                 std::cout << target.rows() << std::endl;
-                
                 target.row(fileLine-1) << val; // Add the last value to the target vector
-                std::cout << "---------------------------------" << std::endl;
+             
             }
         }
         
@@ -114,14 +111,6 @@ std::vector<VectorXd> readFile(std::string file_name, bool hasHeader = true){
     
 };
 
-
-int main()
-{
-    //std::cout << count_rows("/Users/marcusandersson/Desktop/neural_network/data/processed_data.csv");
-    /* code */
-    std::vector<VectorXd> test = readFile("/Users/marcusandersson/Desktop/neural_network/data/processed_data.csv", true); // Set to 'false' if no header
-    
-    //std::cout << test.back() << std::endl;
-    return 0;
-}
+// Remove the main function from Utilities.cpp
+// This file should not contain a main function if main.cpp is the entry point.
 

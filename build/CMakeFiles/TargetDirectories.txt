@@ -1,0 +1,3 @@
+/Users/marcusandersson/Desktop/Neural_Network/build/CMakeFiles/NN.dir
+/Users/marcusandersson/Desktop/Neural_Network/build/CMakeFiles/edit_cache.dir
+/Users/marcusandersson/Desktop/Neural_Network/build/CMakeFiles/rebuild_cache.dir
